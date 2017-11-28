@@ -6,12 +6,13 @@ import javax.persistence.Persistence;
 
 public class EntityManagerSession implements AutoCloseable {
 
-    private static final EntityManagerFactory factory
-            = Persistence.createEntityManagerFactory("PersistenceUnit");
+    private static final EntityManagerFactory factory = Persistence.createEntityManagerFactory("PersistenceUnit");
+
     private EntityManager manager;
 
     public EntityManagerSession() {
         manager = factory.createEntityManager();
+        manager.getTransaction().begin();
     }
 
     public EntityManager getManager() {
@@ -20,6 +21,7 @@ public class EntityManagerSession implements AutoCloseable {
 
     @Override
     public void close() {
+        manager.getTransaction().commit();
         manager.close();
     }
 }

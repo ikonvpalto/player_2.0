@@ -10,16 +10,20 @@ public class Album implements Serializable {
 
     @Id
     @Column(name = "album_id")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Getter @Setter
     private long id;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title")
+//    @Getter @Setter
     private String title;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+//    @Getter @Setter
     private Artist artist;
 
     @OneToMany(cascade = CascadeType.ALL)
+//    @Getter @Setter
     private List<Track> tracks;
 
     public Album() {}

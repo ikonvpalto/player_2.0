@@ -10,10 +10,10 @@ public class Artist implements Serializable {
 
     @Id
     @Column(name = "artist_id")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "name")
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL)

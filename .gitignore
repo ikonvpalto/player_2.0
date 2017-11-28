@@ -1,3 +1,4 @@
 *.xml
 !persistence.xml
+!pom.xml
 *.iml

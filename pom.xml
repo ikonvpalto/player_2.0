@@ -8,6 +8,25 @@
     <artifactId>music server</artifactId>
     <version>0.1</version>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>9</java.version>
+        <junit.version>4.12</junit.version>
+        <junit.jupiter.version>5.0.2</junit.jupiter.version>
+        <junit.platform.version>1.0.2</junit.platform.version>
+        <jna.version>4.5.0</jna.version>
+        <mysql-connector.version.old>5.1.39</mysql-connector.version.old>
+        <mysql-connector.version>6.0.6</mysql-connector.version>
+        <hibernate-core.version.old>5.2.10.Final</hibernate-core.version.old>
+        <hibernate-core.version>5.2.12.Final</hibernate-core.version>
+        <jpa.version>2.1</jpa.version>
+        <hibernate-jpa.version>1.0.0.Final</hibernate-jpa.version>
+        <hibernate-annotations.version>3.5.6-Final</hibernate-annotations.version>
+        <hibernate-validator.version.old>6.0.2.Final</hibernate-validator.version.old>
+        <hibernate-validator.version>6.0.5.Final</hibernate-validator.version>
+        <lombok.version>1.16.18</lombok.version>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -15,9 +34,39 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.7.0</version>
                 <configuration>
-                    <source>9</source>
-                    <target>9</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.20.1</version>
+                <configuration>
+                    <argLine>--add-modules java.xml.bind</argLine>
+                    <includes>
+                        <include>**/Test*.java</include>
+                        <include>**/*Test.java</include>
+                        <include>**/*Tests.java</include>
+                        <include>**/*TestCase.java</include>
+                    </includes>
+                    <properties>
+                        <!-- <includeTags>fast</includeTags> -->
+                        <excludeTags>slow</excludeTags>
+                        <!--
+                        <configurationParameters>
+                            junit.jupiter.conditions.deactivate = *
+                        </configurationParameters>
+                        -->
+                    </properties>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.junit.platform</groupId>
+                        <artifactId>junit-platform-surefire-provider</artifactId>
+                        <version>${junit.platform.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
@@ -26,39 +75,65 @@
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
-            <version>4.5.0</version>
+            <version>${jna.version}</version>
         </dependency>
 
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.39</version>
+            <version>${mysql-connector.version.old}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.2.10.Final</version>
+            <version>${hibernate-core.version.old}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.1-api</artifactId>
-            <version>1.0.0.Final</version>
+            <version>${hibernate-jpa.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-annotations</artifactId>
-            <version>3.5.6-Final</version>
+            <version>${hibernate-annotations.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>6.0.2.Final</version>
+            <version>${hibernate-validator.version.old}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apiguardian</groupId>
+            <artifactId>apiguardian-api</artifactId>
+            <version>1.0.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>org.projectlombok</groupId>-->
+            <!--<artifactId>lombok</artifactId>-->
+            <!--<version>${lombok.version}</version>-->
+        <!--</dependency>-->
     </dependencies>
 
 </project>

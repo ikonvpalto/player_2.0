@@ -9,10 +9,10 @@ public class Track implements Serializable {
 
     @Id
     @Column(name = "track_id")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title")
     private String title;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
