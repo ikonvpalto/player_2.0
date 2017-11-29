@@ -5,26 +5,27 @@ import org.kvp_bld_sck.musicserver.entity.Album;
 import org.kvp_bld_sck.musicserver.entity.Track;
 
 import java.util.List;
+import java.util.Map;
 
 public class TrackDaoImpl extends DaoImpl<Long, Track> implements TrackDao {
     @Override
     public List<Track> get(Album album) {
         return getByField("album.id", album.getId());
-//        try (EntityManagerSession session = new EntityManagerSession()) {
-//            return session.getManager().createQuery("select t from Track t where t.album.id = :id", Track.class)
-//                                       .setParameter("id", album.getId())
-//                                       .getResultList();
-//        }
     }
 
     @Override
-    public List<Track> get(String title) {
-        return getByField("title", title);
-//        try (EntityManagerSession session = new EntityManagerSession()) {
-//            return session.getManager().createQuery("select t from Track t where t.title = :title", Track.class)
-//                                       .setParameter("title", title)
-//                                       .getResultList();
-//        }
+    public Track get(Album album, String title) {
+        try (EntityManagerSession session = new EntityManagerSession()) {
+            List<Track> result = session.getManager()
+                    .createQuery("select t from Track t where t.album.id = :id and t.title = :title", Track.class)
+                    .setParameter("id", album.getId())
+                    .setParameter("title", title)
+                    .getResultList();
+            if (0 == result.size())
+                return null;
+            else
+                return result.get(0);
+        }
     }
 
     @Override

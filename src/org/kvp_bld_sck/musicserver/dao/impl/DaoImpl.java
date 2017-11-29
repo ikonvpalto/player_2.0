@@ -2,7 +2,11 @@ package org.kvp_bld_sck.musicserver.dao.impl;
 
 import org.kvp_bld_sck.musicserver.dao.Dao;
 
+import javax.persistence.TypedQuery;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public abstract class DaoImpl<IdType, Entity> implements Dao<IdType, Entity> {
     protected abstract IdType getId(Entity entity);
@@ -47,15 +51,16 @@ public abstract class DaoImpl<IdType, Entity> implements Dao<IdType, Entity> {
         }
     }
 
-    protected List<Entity> getByField(String fieldName, Object fieldValue) {
+    List<Entity> getByField(String fieldName, Object fieldValue) {
         fieldName = "e." + fieldName;
+        StringBuilder query = new StringBuilder()
+                .append("select e from ")
+                .append(getEntityClass().getName())
+                .append(" e where ")
+                .append(fieldName)
+                .append(" = :fieldValue");
+
         try (EntityManagerSession session = new EntityManagerSession()) {
-            StringBuilder query = new StringBuilder()
-                    .append("select e from ")
-                    .append(getEntityClass().getName())
-                    .append(" e where ")
-                    .append(fieldName)
-                    .append(" = :fieldValue");
             return session.getManager()
                     .createQuery(query.toString(), getEntityClass())
                     .setParameter("fieldValue", fieldValue)

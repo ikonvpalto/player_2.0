@@ -8,6 +8,6 @@ import java.util.List;
 public interface TrackDao extends Dao<Long, Track> {
 
     List<Track> get(Album album);
-    List<Track> get(String title);
+    Track get(Album album, String title);
 
 }

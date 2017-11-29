@@ -13,7 +13,6 @@ import org.kvp_bld_sck.musicserver.entity.Artist;
 import org.kvp_bld_sck.musicserver.entity.Track;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 public class TrackDaoTests {
 
@@ -40,20 +39,6 @@ public class TrackDaoTests {
     }
 
     @Test
-    public void testGetByTitle() {
-        Artist artist = new Artist("vahvah artist");
-        Album album = new Album("vahvah album", artist);
-        Track track = new Track("vahvah track", album);
-
-        artistDao.save(artist);
-        albumDao.save(album);
-        trackDao.save(track);
-        List<Track> tracks = trackDao.get(track.getTitle());
-        assertEquals(1, tracks.size());
-        assertEquals(tracks.get(0), track);
-    }
-
-    @Test
     public void testGetByAlbum() {
         Artist artist = new Artist("vahvah artist");
         Album album = new Album("vahvah album", artist);
@@ -72,6 +57,21 @@ public class TrackDaoTests {
         assertTrue(tracks.contains(first));
         assertTrue(tracks.contains(second));
         assertTrue(!tracks.contains(third));
+    }
+
+    @Test
+    public void testGetByAlbumAndTitle() {
+        Artist artist = new Artist("vahvah artist");
+        Album album = new Album("vahvah album", artist);
+        Track first = new Track("vahvah track", album);
+        Track second = new Track("supervah track", album);
+
+        artistDao.save(artist);
+        albumDao.save(album);
+        first.setId(trackDao.save(first));
+        second.setId(trackDao.save(second));
+        Track anotherFirst = trackDao.get(album, first.getTitle());
+        assertEquals(anotherFirst, first);
     }
 
 }
