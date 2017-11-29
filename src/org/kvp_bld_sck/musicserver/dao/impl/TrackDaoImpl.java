@@ -9,11 +9,22 @@ import java.util.List;
 public class TrackDaoImpl extends DaoImpl<Long, Track> implements TrackDao {
     @Override
     public List<Track> get(Album album) {
-        try (EntityManagerSession session = new EntityManagerSession()) {
-            return session.getManager().createQuery("select t from Track t where t.album.id = :id", Track.class)
-                                       .setParameter("id", album.getId())
-                                       .getResultList();
-        }
+        return getByField("album.id", album.getId());
+//        try (EntityManagerSession session = new EntityManagerSession()) {
+//            return session.getManager().createQuery("select t from Track t where t.album.id = :id", Track.class)
+//                                       .setParameter("id", album.getId())
+//                                       .getResultList();
+//        }
+    }
+
+    @Override
+    public List<Track> get(String title) {
+        return getByField("title", title);
+//        try (EntityManagerSession session = new EntityManagerSession()) {
+//            return session.getManager().createQuery("select t from Track t where t.title = :title", Track.class)
+//                                       .setParameter("title", title)
+//                                       .getResultList();
+//        }
     }
 
     @Override

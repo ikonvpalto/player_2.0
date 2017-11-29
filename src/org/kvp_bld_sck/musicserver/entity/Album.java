@@ -11,19 +11,16 @@ public class Album implements Serializable {
     @Id
     @Column(name = "album_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Getter @Setter
     private long id;
 
     @Column(name = "title")
-//    @Getter @Setter
     private String title;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-//    @Getter @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "artist_id")
     private Artist artist;
 
-    @OneToMany(cascade = CascadeType.ALL)
-//    @Getter @Setter
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "album")
     private List<Track> tracks;
 
     public Album() {}
@@ -73,5 +70,23 @@ public class Album implements Serializable {
 
     public void setTracks(List<Track> tracks) {
         this.tracks = tracks;
+    }
+
+    @Override
+    public String toString() {
+        return "Album{" +
+                "title='" + title + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if ((null == obj) || !(obj instanceof Album))
+            return false;
+        Album other = (Album) obj;
+        if ((0 < id) && (0 < other.getId()))
+            return id == other.getId();
+        boolean titleEquals = ((null != title) && (null != other.getTitle()) && (title.equals(other.title)));
+        return titleEquals;
     }
 }

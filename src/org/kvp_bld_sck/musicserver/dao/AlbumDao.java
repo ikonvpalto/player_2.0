@@ -8,5 +8,6 @@ import java.util.List;
 public interface AlbumDao extends Dao<Long, Album> {
 
     List<Album> get(Artist artist);
+    List<Album> get(String title);
 
 }

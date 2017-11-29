@@ -9,11 +9,22 @@ import java.util.List;
 public class AlbumDaoImpl extends DaoImpl<Long, Album> implements AlbumDao {
     @Override
     public List<Album> get(Artist artist) {
-        try (EntityManagerSession session = new EntityManagerSession()) {
-            return session.getManager().createQuery("select a from Album a where a.artist.id = :id", Album.class)
-                    .setParameter("id", artist.getId())
-                    .getResultList();
-        }
+        return getByField("artist.id", artist.getId());
+//        try (EntityManagerSession session = new EntityManagerSession()) {
+//            return session.getManager().createQuery("select a from Album a where a.artist.id = :id", Album.class)
+//                    .setParameter("id", artist.getId())
+//                    .getResultList();
+//        }
+    }
+
+    @Override
+    public List<Album> get(String title) {
+        return getByField("title", title);
+//        try (EntityManagerSession session = new EntityManagerSession()) {
+//            return session.getManager().createQuery("select a from Album a where a.title = :title", Album.class)
+//                    .setParameter("title", title)
+//                    .getResultList();
+//        }
     }
 
     @Override

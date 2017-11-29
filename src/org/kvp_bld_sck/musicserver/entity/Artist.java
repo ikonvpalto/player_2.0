@@ -16,7 +16,7 @@ public class Artist implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "artist")
     private List<Album> albums;
 
     public Artist() {}
@@ -56,5 +56,23 @@ public class Artist implements Serializable {
 
     public void setAlbums(List<Album> albums) {
         this.albums = albums;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if ((null == obj) || !(obj instanceof Artist))
+            return false;
+        Artist other = (Artist) obj;
+        if ((0 < id) && (0 < other.getId()))
+            return id == other.getId();
+        boolean nameEquals = ((null != name) && (null != other.getName()) && (name.equals(other.name)));
+        return nameEquals;
+    }
+
+    @Override
+    public String toString() {
+        return "Artist{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }

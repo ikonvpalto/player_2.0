@@ -15,7 +15,8 @@ public class Track implements Serializable {
     @Column(name = "title")
     private String title;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "album_id")
     private Album album;
 
     public Track() {}
@@ -59,4 +60,21 @@ public class Track implements Serializable {
         this.album = album;
     }
 
+    @Override
+    public String toString() {
+        return "Track{" +
+                "title='" + title + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if ((null == obj) || !(obj instanceof Track))
+            return false;
+        Track other = (Track) obj;
+        if ((0 < id) && (0 < other.getId()))
+            return id == other.getId();
+        boolean titleEquals = ((null != title) && (null != other.getTitle()) && (title.equals(other.title)));
+        return titleEquals;
+    }
 }

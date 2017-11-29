@@ -2,6 +2,6 @@
 !persistence.xml
 !pom.xml
 *.iml
-*Tests.java
+#Tests.java
 .idea/**
 .target/**

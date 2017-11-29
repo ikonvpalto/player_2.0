@@ -42,7 +42,24 @@ public abstract class DaoImpl<IdType, Entity> implements Dao<IdType, Entity> {
     @Override
     public void delete(Entity entity) {
         try (EntityManagerSession session = new EntityManagerSession()) {
-            session.getManager().remove(entity);
+            Entity removed = session.getManager().merge(entity);
+            session.getManager().remove(removed);
+        }
+    }
+
+    protected List<Entity> getByField(String fieldName, Object fieldValue) {
+        fieldName = "e." + fieldName;
+        try (EntityManagerSession session = new EntityManagerSession()) {
+            StringBuilder query = new StringBuilder()
+                    .append("select e from ")
+                    .append(getEntityClass().getName())
+                    .append(" e where ")
+                    .append(fieldName)
+                    .append(" = :fieldValue");
+            return session.getManager()
+                    .createQuery(query.toString(), getEntityClass())
+                    .setParameter("fieldValue", fieldValue)
+                    .getResultList();
         }
     }
 }
